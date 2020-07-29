@@ -1,0 +1,23 @@
+{% extends 'base.html' %}
+
+
+{% block content %}
+
+  <h1> Edit a user </h1>
+
+<form action="" method="POST"> <!-- link route to edit users-->
+    <!-- Set current user info from DB as default for each input field -->
+    <label for="first-name">First Name</label>
+    <input type="text" required name="first-name" id="first-name" default="...">
+
+    <label for="last-name">Last Name</label>
+    <input type="text" required name="last-name" id="last-name" default="...">
+
+    <label for="image-url">Image URL</label>
+    <input type="url" required name="image-url" id="image-url" default="...">
+    <!-- Add path for user details page-->
+    <a href="...User_detail_path" class="btn btn-secondary">Cancel</a> <button type="submit" class="btn btn-success">Save</button>
+</form>
+
+
+{% endblock %}

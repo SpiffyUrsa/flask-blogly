@@ -1,0 +1,14 @@
+{% extends 'base.html' %}
+
+
+{% block content %}
+
+<div class="card" style="width: 18rem;">
+    <img class="card-img-top" src="{{url}}" alt="Card image cap"> <!-- Pull from url from DB-->
+    <div class="card-body">
+      <h5 class="card-title"> NAME </h5> <!-- Pull NAME from DB-->
+      <a href="#" class="btn btn-primary">Edit</a> <a href="#" class="btn btn-danger">Delete</a> <!--Add links later-->
+    </div>
+  </div>
+
+{% endblock %}
