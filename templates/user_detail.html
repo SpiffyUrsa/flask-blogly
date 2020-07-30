@@ -8,7 +8,7 @@
     <img class="card-img-top" src="{{ user.image_url }}" alt="Card image cap">
     <div class="card-body">
       <h3 class="card-title text-center">{{ user.first_name }} {{ user.last_name }}</h3>
-      <div class="row text-center mx-auto">
+      <div class="row text-center col-7 mx-auto">
         <a href="/users/{{ user.id }}/edit" class="btn btn-primary">Edit</a>
         <form action="/users/{{ user.id }}/delete" method="POST">
           <input type="hidden" name="delete-user" value="{{ user.id }}">

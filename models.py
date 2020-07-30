@@ -23,5 +23,5 @@ class User(db.Model):
     last_name = db.Column(db.String(100), nullable=False)
 
     image_url = db.Column(db.String(100), 
-        nullable=True, 
+        nullable=False, # will there be a difference between how to handle '' vs NULL?
         default="https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_1280.png")

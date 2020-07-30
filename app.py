@@ -41,7 +41,7 @@ def handle_new_user():
     """ Handle the submission of the new user form """
     first_name = request.form['first-name']
     last_name = request.form['last-name']
-    image_url = request.form['image-url']
+    image_url = request.form['image-url'] or 'https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_1280.png' 
 
     new_user = User(first_name = first_name, last_name = last_name, image_url = image_url)
     db.session.add(new_user)
@@ -67,7 +67,8 @@ def handle_edit_user(user_id):
     user = User.query.get(user_id)
     first_name = request.form['first-name']
     last_name = request.form['last-name']
-    image_url = request.form['image-url']
+    image_url = request.form['image-url'] or 'https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_1280.png' 
+    # would be adding NULL in psql, or add str of default image
 
     user.first_name = first_name
     user.last_name = last_name
