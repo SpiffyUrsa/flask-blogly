@@ -2,6 +2,7 @@ from unittest import TestCase
 
 from app import app
 from models import db, User
+from datetime import datetime
 
 # Use test database and don't clutter tests with SQL
 app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql:///blogly'
@@ -70,17 +71,19 @@ class UserViewsTestCase(TestCase):
             resp = client.post("/users/new", data=d, follow_redirects=False)
 
             self.assertEqual(resp.status_code, 302)
+            self.assertEqual(resp.location, 'http://localhost/users')
             # CODEREVIEW
             
     def test_handle_new_user_in_database(self):
         """ Checks if new user added to database""" 
         with app.test_client() as client:
-            d = {"first-name": "TestUser2", "last-name": "cat"}
+            d = {"first-name": "TestUser2", "last-name": "cat", "image-url": ""}
             resp = client.post("/users/new", data=d, follow_redirects=True)
-        
+            html = resp.get_data(as_text=True)
 
             ## TODO: check for user name
             # CODE REVIEW look for user name in listing page
             self.assertEqual(resp.status_code, 200)
+            self.assertIn('TestUser2 cat', html)
 
 
