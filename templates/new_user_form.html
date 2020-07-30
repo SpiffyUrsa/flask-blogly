@@ -1,5 +1,6 @@
 {% extends 'base.html' %}
 
+{% block title %}Create User{% endblock %}
 
 {% block content %}
 
@@ -13,7 +14,7 @@
     <input type="text" required name="last-name" id="last-name" placeholder="Enter a last name">
 
     <label for="image-url">Image URL</label>
-    <input type="url" required name="image-url" id="image-url" placeholder="Provide an image of this user">
+    <input type="url" name="image-url" id="image-url" placeholder="Provide an image of this user">
     <button type="submit" class="btn">Add</button>
 </form>
 
