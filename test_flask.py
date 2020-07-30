@@ -142,4 +142,17 @@ class PostViewsTestCase(TestCase):
             self.assertEqual(resp.location, f'http://localhost/users/{self.user_id}')
         # TODO: how to combine multiple 'with app.test_client() as client:' under same test
 
+    # def test_handle_post_delete(self):
+    #     """ Tests if a post is deleted """
+    #     with app.test_client() as client:
+    #         post = Post.query.get(self.post_id)
+    #         resp = client.post(f'/posts/{self.post_id}/delete', follow_redirects=True)
+    #         html = resp.get_data(as_text=True)
+
+    #         self.assertEqual(resp.status_code, 200)
+    #         self.assertNotIn(f'{post.title}', html)
+
+            
+
+
 
