@@ -89,3 +89,75 @@ def handle_delete_user(user_id):
     db.session.commit()
 
     return redirect("/users")
+
+@app.route('/users/<user_id>/posts/new')
+def show_add_post_form(user_id):
+    """ Renders add post form"""
+
+    user = User.query.get(user_id)
+
+    return render_template("new_post_form.html", user = user)
+
+@app.route('/users/<user_id>/posts/new', methods=['POST'])
+def handle_add_post(user_id):
+    """ Handle the adding of a new post"""
+    
+    post_title = request.form["post-title"]
+    post_content = request.form["post-content"]
+
+    post = Post(title=post_title, content=post_content, user_id=user_id)
+    db.session.add(post)
+    db.session.commit()
+
+    return redirect(f'/users/{user_id}')
+
+@app.route('/posts/<post_id>')
+def show_post(post_id):
+    """ Show a post"""
+
+    post = Post.query.get(post_id)
+
+    return render_template('/post_detail.html', post = post)
+
+
+# TODO: Is combining methods to the same route & adding conditional logic best practice?
+@app.route('/posts/<post_id>/edit')
+def show_post_edit_form(post_id):
+    """ Shows form to edit a post"""
+
+    post = Post.query.get(post_id)
+
+    return render_template('edit_post_form.html', post=post)
+
+@app.route('/posts/<post_id>/edit', methods=['POST'])
+def handle_post_edit(post_id):
+    """ Handle the submission of the edit post form """
+
+    post_title = request.form["post-title"]
+    post_content = request.form["post-content"]
+    post = Post.query.get(post_id)
+
+    post.title = post_title
+    post.content = post_content
+
+    db.session.commit()
+
+    return redirect(f'/posts/{post_id}')
+
+@app.route('/posts/<post_id>/delete', methods=['POST'])
+def handle_post_delete(post_id):
+    """ Handle the deletion of a post """
+
+    post = Post.query.get(post_id)
+    user_id = post.user.id
+
+    db.session.delete(post)
+    db.session.commit()
+
+    return redirect(f'/users/{user_id}')
+
+
+
+
+
+    

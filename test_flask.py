@@ -1,7 +1,7 @@
 from unittest import TestCase
 
 from app import app
-from models import db, User
+from models import db, User, Post
 from datetime import datetime
 
 # Use test database and don't clutter tests with SQL
@@ -25,6 +25,8 @@ class UserViewsTestCase(TestCase):
         """Add sample user."""
 
         # TODO: Assuming this deletes all users from table
+        db.session.rollback() 
+        Post.query.delete()
         User.query.delete() 
 
         user = User(first_name="TestUser", last_name="1")
@@ -64,7 +66,7 @@ class UserViewsTestCase(TestCase):
             self.assertIn('Create a user', html) # CODEREVIEW <a> tags, can break with additional attr
 
     def test_handle_new_user(self):
-        """ Checks for rediect after adding new user""" 
+        """ Checks for redirect after adding new user""" 
         with app.test_client() as client:
             d = {"first-name": "TestUser2", "last-name": "cat", "image-url": ""}
             # CODEREVIEW: test failed, potential for edge cases
@@ -85,5 +87,59 @@ class UserViewsTestCase(TestCase):
             # CODE REVIEW look for user name in listing page
             self.assertEqual(resp.status_code, 200)
             self.assertIn('TestUser2 cat', html)
+
+
+
+class PostViewsTestCase(TestCase):
+    """Tests for views for Posts."""
+
+    def setUp(self):
+        """Add sample post."""
+
+        db.session.rollback() 
+
+        Post.query.delete()
+        User.query.delete()
+
+        user = User(first_name="TestUser", last_name="1")
+        
+        db.session.add(user)
+        db.session.commit()
+
+        self.user_id = user.id
+
+        post = Post(title="Cat Nip", content="Hiiiiiiiiii cats", user_id=self.user_id)
+        db.session.add(post)
+        db.session.commit()
+
+        self.post_id = post.id
+
+    def tearDown(self):
+        """Clean up any fouled transaction."""
+
+        db.session.rollback() 
+
+    def test_handle_add_post(self):
+        """ Tests that post shows on user page after new post is added """
+
+        with app.test_client() as client:
+            p = {"post-title":"Heey Kitties Kitties", "post-content":"Want some catnip?"}
+            resp = client.post(f'/users/{self.user_id}/posts/new', data=p, follow_redirects=True)
+            html = resp.get_data(as_text=True)
+
+            self.assertIn('Heey Kitties Kitties', html)
+            self.assertEqual(resp.status_code, 200)
+
+    def test_handle_add_post_redirect(self):
+        """ Tests redirection after a post is added"""
+
+        with app.test_client() as client:
+            p = {"post-title":"Heey Kitties Kitties", "post-content":"Want some catnip?"}
+            resp = client.post(f'/users/{self.user_id}/posts/new', data=p, follow_redirects=False)
+            html = resp.get_data(as_text=True)
+
+            self.assertEqual(resp.status_code, 302)
+            self.assertEqual(resp.location, f'http://localhost/users/{self.user_id}')
+        # TODO: how to combine multiple 'with app.test_client() as client:' under same test
 
 

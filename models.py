@@ -42,3 +42,4 @@ class Post(db.Model):
     content = db.Column(db.String(9001), nullable=False)
     created_at = db.Column(db.DateTime, nullable=False, default=datetime.now())
     user_id = db.Column(db.Integer, db.ForeignKey("users.id"))
+    ## CODEREVIEW: at a db-level, line 44 sets our referential constraint

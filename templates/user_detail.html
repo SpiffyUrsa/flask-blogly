@@ -20,10 +20,10 @@
       <h5>Posts</h5>
       <ul>
         {% for post in user.posts %}
-        <li><a href="#">{{ post.title }}</a></li>
+        <li><a href="/posts/{{post.id}}">{{ post.title }}</a></li>
         {% endfor %}
       </ul>
-      <a href="#">Add Post</a>
+      <a href="/users/{{user.id}}/posts/new" class="btn btn-primary">Add Post</a>
     </div>
   </div>
 </div>

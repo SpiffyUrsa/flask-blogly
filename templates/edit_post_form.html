@@ -1,0 +1,20 @@
+{% extends 'base.html' %}
+
+{% block title %} Edit Post {% endblock %}
+
+{% block content %}
+
+  <h1> Edit Post </h1>
+<!-- TODO: edit styling with bootstrap  -->
+    <form action="/posts/{{post.id}}/edit" method="POST">
+        <label for="post-title">Title</label>
+        <input type="text" required name="post-title" id="post-title" value="{{post.title}}">
+        <br>
+        <label for="post-content">Post Content</label>
+        <textarea required name="post-content" id="last-name" rows="50" cols="100">{{post.content}}</textarea>
+        <br>    
+        <a href="/users/{{post.user.id}}" class="btn btn-info">Cancel</a>
+        <button type="submit" class=" btn btn-success">Edit</button>
+    </form>
+
+{% endblock %}

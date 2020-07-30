@@ -1,0 +1,28 @@
+{% extends 'base.html' %}
+
+{% block title %} {{post.title}} {% endblock %}
+
+{% block content %}
+
+  <h1> {{post.title}} </h1>
+  
+  <div class="col-12 ml-auto"> 
+      <p>
+        {{post.content}} 
+      </p>
+    </div>
+
+  <div class="col-12">
+      <p>
+        <em>By {{ post.user.first_name }} {{ post.user.last_name }}</em>
+    </p>
+    </div>
+
+  <div class="row">
+    <a class="btn btn-secondary" href="/users/{{post.user.id}}" id="post-detail-cancel">Cancel</a>
+    <a class="btn btn-primary" href="/posts/{{post.id}}/edit" id="post-detail-edit">Edit</a>
+    <form>
+        <button class="btn btn-danger" formaction="/posts/{{post.id}}/delete" formmethod="POST">Delete</button>
+    </form>
+  </div>
+{% endblock %}
