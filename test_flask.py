@@ -5,7 +5,7 @@ from models import db, User, Post
 from datetime import datetime
 
 # Use test database and don't clutter tests with SQL
-app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql:///blogly'
+app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql:///blogly_test' #Create the database TODO
 app.config['SQLALCHEMY_ECHO'] = False
 
 # Make Flask errors be real errors, rather than HTML pages with error info
@@ -29,7 +29,7 @@ class UserViewsTestCase(TestCase):
         Post.query.delete()
         User.query.delete() 
 
-        user = User(first_name="TestUser", last_name="1")
+        user = User(first_name="TestUser", last_name="1") #Be as boring as possible with test inputs. Most basic descriptions
         db.session.add(user)
         db.session.commit()
 
@@ -99,6 +99,7 @@ class PostViewsTestCase(TestCase):
         db.session.rollback() 
 
         Post.query.delete()
+        db.session.commit()
         User.query.delete()
 
         user = User(first_name="TestUser", last_name="1")
@@ -142,15 +143,22 @@ class PostViewsTestCase(TestCase):
             self.assertEqual(resp.location, f'http://localhost/users/{self.user_id}')
         # TODO: how to combine multiple 'with app.test_client() as client:' under same test
 
-    # def test_handle_post_delete(self):
-    #     """ Tests if a post is deleted """
+    def test_handle_post_delete(self):
+        """ Tests if a post is deleted """
+        with app.test_client() as client:
+            post = Post.query.get(self.post_id)
+            resp = client.post(f'/posts/{self.post_id}/delete', follow_redirects=True)
+            html = resp.get_data(as_text=True)
+
+            self.assertEqual(resp.status_code, 200)
+            self.assertNotIn(f'{post.title}', html)
+
+    #  def test_edit_post_form(self):
+    #     """ Tests if a post is edited. """
     #     with app.test_client() as client:
     #         post = Post.query.get(self.post_id)
-    #         resp = client.post(f'/posts/{self.post_id}/delete', follow_redirects=True)
-    #         html = resp.get_data(as_text=True)
+    #         p
 
-    #         self.assertEqual(resp.status_code, 200)
-    #         self.assertNotIn(f'{post.title}', html)
 
             
 
